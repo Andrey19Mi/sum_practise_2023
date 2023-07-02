@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
+using System.IO;
+/*
+using System.Threading.Tasks;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
-
+*/
 namespace sum_practise_2023
 {
-    internal class ConfigException : Exception { }
+    
     internal class Document
     {
         // Control wrapper
@@ -104,6 +108,11 @@ namespace sum_practise_2023
         }
         private System.Windows.Forms.Panel _render;
         private List<Component> _components;
+        public List<Component> Components
+        {
+            get { return _components; }
+            set { _components = value; }
+        }
         public Document(System.Windows.Forms.Panel render_surface)
         {
             
@@ -117,6 +126,8 @@ namespace sum_practise_2023
             
             _render.Invalidate();
             //t.EnableEditing;
+
+
         }
 
         private void MouseClickEventHandle(object obj,MouseEventArgs e)
@@ -147,12 +158,40 @@ namespace sum_practise_2023
         }
         private void TextFieldEditing(Control ctl)
         {
-            // enable typing for Label
+            // TODO: enable typing for Label
+            // that can be achieved by spawning a textbox somewhere, that will update text of label, and despawn it when it loses focus or escaped pressed.
         }
 
 
-        // TODO: save and load state from json
+        // Save and load state from json
 
+        public void SaveComponentsToJson(string SavePath)
+        {
+            // need to save size w/h and etc
+            // create a helper container that will be serialized
+            List<Config> cfg = new List<Config>();
+            foreach(var ctl in Components)
+            {
+                if(ctl.comp is Label)
+                {
+                    TextFieldConfig c = new TextFieldConfig();
+                    c.Deconstruct(ctl.comp);
+                    cfg.Add(c);
+                }
+            }
+            // TODO: catch exceptions and rethrow a custom fatal exception
+            File.WriteAllText(SavePath, JsonSL.Serialize(cfg));
+        }
+        public void LoadComponentsFromJson(string LoadPath)
+        {
+            // TODO: same here, rethrow an exception with more vivid discription that the file is'nt in the right format
+            // fix an error of loading - throws an exception for some reason idk why yet
+            List<Config> cfg = JsonSL.Deserialize<List<Config>>(LoadPath);
+            foreach(var ctl in cfg){
+                _components.Add(new Component(ctl.Construct(),this));
+            }
+            // also we should catch that exception in the form and give user a notice that the file is corrupted or is not in the right format
+        }
 
 
         // clip size of drawing area - the size of document

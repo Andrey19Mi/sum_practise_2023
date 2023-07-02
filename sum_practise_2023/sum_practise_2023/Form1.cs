@@ -40,5 +40,14 @@ namespace sum_practise_2023
             dm.mode = Document.Mode.Add;
             dm.addMode = Document.AddMode.TextField;
         }
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            
+            dm.SaveComponentsToJson("SavedData.json");
+        }
+        private void LoadButton_Click(object sender, EventArgs e)
+        {
+            dm.LoadComponentsFromJson("SavedData.json");
+        }
     }
 }

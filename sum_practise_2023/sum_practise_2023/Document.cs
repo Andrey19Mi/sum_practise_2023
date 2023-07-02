@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.IO;
+/*
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
-
+*/
 namespace sum_practise_2023
 {
     internal class ConfigException : Exception { }
@@ -104,6 +108,11 @@ namespace sum_practise_2023
         }
         private System.Windows.Forms.Panel _render;
         private List<Component> _components;
+        public List<Component> Components
+        {
+            get { return _components; }
+            set { _components = value; }
+        }
         public Document(System.Windows.Forms.Panel render_surface)
         {
             
@@ -117,6 +126,8 @@ namespace sum_practise_2023
             
             _render.Invalidate();
             //t.EnableEditing;
+
+
         }
 
         private void MouseClickEventHandle(object obj,MouseEventArgs e)
@@ -151,10 +162,17 @@ namespace sum_practise_2023
         }
 
 
-        // TODO: save and load state from json
+        // Save and load state from json
 
-
-
+        public void SaveComponentsToJson(string SavePath)
+        {
+            // need to save size w/h and etc
+            File.WriteAllText(SavePath, JsonSL.Serialize(Components));
+        }
+        public void LoadComponentsFromJson(string LoadPath)
+        {
+          Components = JsonSL.Deserialize<List<Component>>(LoadPath); 
+        }
         // clip size of drawing area - the size of document
         // TODO: research if there is any other way of setting clip to a panel
         // because currently its an integer, but many sizes of documents might lend non integer values.

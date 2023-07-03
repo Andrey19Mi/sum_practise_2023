@@ -17,7 +17,8 @@ namespace sum_practise_2023
         {
             InitializeComponent();
             dm = new Document(main);
-            
+            KeyDown += Form1_KeyDown;
+            KeyPreview = true;
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -64,6 +65,29 @@ namespace sum_practise_2023
             }
         }
 
-        
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.E)
+            {
+                MoveButton_Click(sender, e);
+            }
+            else if (e.KeyCode == Keys.M || e.KeyCode == Keys.V)
+            {
+                EditButton_Click(sender, e);
+            }
+            else if (e.KeyCode == Keys.T)
+            {
+                AddTextButton_Click(sender, e);
+            }
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                SaveButton_Click(sender, e);
+            }
+        }
     }
 }

@@ -62,7 +62,7 @@ namespace sum_practise_2023
             if ( this.Text == null || this.FamilyName == null ) {
                 throw new ConfigException();
             }
-            Label lb = new Label();
+            Control lb = new Label();
             lb.Text = Text;
             lb.Location = new Point(X,Y);
             // this one might throw an
@@ -70,4 +70,5 @@ namespace sum_practise_2023
             return lb;
         }
     }
+    
 }

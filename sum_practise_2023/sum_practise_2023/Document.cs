@@ -108,6 +108,8 @@ namespace sum_practise_2023
         }
         private System.Windows.Forms.Panel _render;
         private List<Component> _components;
+        private string path;
+        public string Path { get { return path; } }
         public List<Component> Components
         {
             get { return _components; }
@@ -184,6 +186,7 @@ namespace sum_practise_2023
         }
         public void LoadComponentsFromJson(string LoadPath)
         {
+            path = LoadPath;
             // TODO: same here, rethrow an exception with more vivid discription that the file is'nt in the right format
             // fix an error of loading - throws an exception for some reason idk why yet
             List<Config> cfg = JsonSL.Deserialize<List<Config>>(LoadPath);

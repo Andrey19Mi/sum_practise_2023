@@ -19,10 +19,6 @@ namespace sum_practise_2023
             dm = new Document(main);
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-            
-        }
 
         // enables moving motion
         private void MoveButton_Click(object sender, EventArgs e)
@@ -51,14 +47,24 @@ namespace sum_practise_2023
             dm.LoadComponentsFromJson("SavedData.json");
         }
 
-        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            // TODO: DO shortcuts 
-            // press button to change modes
-            // e - edit
-            // m/v - view
-            // t - add text
-            // ctrl+s save file to file from where it was loaded, if none was loaded just invoke savebutton
+            
+            if (e.KeyCode == Keys.E)
+                dm.mode = Document.Mode.Edit;
+            else if (e.KeyCode == Keys.V)
+                dm.mode = Document.Mode.View;
+            else if (e.KeyCode == Keys.T)
+                dm.mode = Document.Mode.Add;
+            else if (e.Control && e.KeyCode == Keys.S)
+            {
+                if (dm.Path == null)
+                    SaveButton.PerformClick();
+                else
+                    dm.SaveComponentsToJson(dm.Path);
+            }
+                
+
         }
     }
 }

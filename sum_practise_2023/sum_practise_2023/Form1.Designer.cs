@@ -46,7 +46,6 @@
             this.main.Name = "main";
             this.main.Size = new System.Drawing.Size(800, 412);
             this.main.TabIndex = 0;
-            this.main.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // MoveButton
             // 
@@ -114,10 +113,11 @@
             this.Controls.Add(this.EditButton);
             this.Controls.Add(this.MoveButton);
             this.Controls.Add(this.main);
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.ResumeLayout(false);
 
         }

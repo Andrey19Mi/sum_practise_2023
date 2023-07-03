@@ -176,18 +176,23 @@ namespace sum_practise_2023
             List<Config> cfg = new List<Config>();
             foreach(var ctl in Components)
             {
-                TextFieldConfig c = new TextFieldConfig();
                 try
                 {
+                    Config c;
                     if (ctl.comp is Label)
                     {
+                        c = new TextFieldConfig();
                         c.Deconstruct(ctl.comp);
+                    }// to ensure that we can easily add configs of other types, 
+                    else
+                    {
+                        throw new Exception();
                     }
+                    cfg.Add(c);
                 }catch
                 {
                     throw new Exception("Сomponent deconstruction error");
                 }
-                cfg.Add(c);
             }
             try
             {
@@ -228,7 +233,7 @@ namespace sum_practise_2023
                 {
                     try
                     {
-                        Components.Add(new Component(new ComponentWrapper(config as TextFieldConfig).Comp, this));
+                        Components.Add(new Component(config.Construct(), this));
                     } catch
                     {
                         throw new Exception("New component add error");

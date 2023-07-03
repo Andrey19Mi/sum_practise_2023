@@ -13,12 +13,22 @@ namespace sum_practise_2023
     public partial class Form1 : Form
     {
         Document dm;
+        SaveFileDialog sfd;
+        OpenFileDialog ofd;
         public Form1()
         {
             InitializeComponent();
             dm = new Document(main);
             KeyDown += Form1_KeyDown;
             KeyPreview = true;
+            sfd = new SaveFileDialog();
+            sfd.Filter = "JSON Files (*.json)|*.json";
+            sfd.CheckPathExists = true;
+            sfd.RestoreDirectory = true;
+            ofd = new OpenFileDialog();
+            ofd.Filter = "JSON Files (*.json)|*.json";
+            ofd.CheckPathExists = true;
+            ofd.RestoreDirectory = true;
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -44,24 +54,16 @@ namespace sum_practise_2023
         }
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog sfd = new SaveFileDialog())
+            if (sfd.ShowDialog(this) == DialogResult.OK)
             {
-                sfd.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
-
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    dm.SaveComponentsToJson(sfd.FileName);
-                }
+                dm.SaveComponentsToJson(sfd.FileName);
             }
         }
         private void LoadButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "JSON Files (*.json)|*.json";
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            if (ofd.ShowDialog(this) == DialogResult.OK)
             {
-                string filePath = openFileDialog.FileName;
-                dm.LoadComponentsFromJson(filePath);
+                dm.LoadComponentsFromJson(ofd.FileName);
             }
         }
 

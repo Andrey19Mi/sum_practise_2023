@@ -21,7 +21,7 @@ namespace sum_practise_2023
     {
         // Control wrapper
         // wraps any control for storing such as text boxes or images, so that they can easily all be edited and evoke different events in editor
-        public class Component
+        public class Component : IDisposable
         {
             public delegate void ControlAction(Control comp);
             public ControlAction EnableEditing; 
@@ -54,7 +54,7 @@ namespace sum_practise_2023
 
             ~Component()
             {
-                //_parent._render.Controls.Remove(comp);
+                Dispose();
             }
             private void DoubleClickEventHandle(object obj, EventArgs e)
             {
@@ -106,7 +106,13 @@ namespace sum_practise_2023
                     comp.Location = newLoc;
                 }
             }
-            
+
+            public void Dispose()
+            {
+                _parent._render.Controls.Remove(comp);
+                ((IDisposable)comp).Dispose();
+            }
+
             // this needs to be overwritten
             //abstract public object Parameters{get;set;}
         }
@@ -203,6 +209,15 @@ namespace sum_practise_2023
             }
             
         }
+        private void DeleteComponents()
+        {
+            
+            foreach (var comp in Components)
+            {
+                comp.Dispose();
+            }
+            Components.Clear();
+        }
         public void LoadComponentsFromJson(string LoadPath)
         {
             // TODO: same here, rethrow an exception with more vivid discription that the file is'nt in the right format
@@ -218,7 +233,6 @@ namespace sum_practise_2023
             {
                 throw new Exception("File reading error");
             }
-
             try
             {
                 configs = JsonSL.Deserialize<List<Config>>(jsonString);
@@ -226,7 +240,7 @@ namespace sum_practise_2023
             {
                 throw new Exception("File deserialize error");
             }
-            
+            DeleteComponents();
             foreach (var config in configs)
             {
                 if (config is TextFieldConfig)

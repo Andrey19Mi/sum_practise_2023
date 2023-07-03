@@ -154,7 +154,18 @@ namespace sum_practise_2023
             lb.Location = position;
             Component cp = new Component(lb, this);
             cp.EnableEditing += TextFieldEditing;
+            cp.comp.MouseDown += new MouseEventHandler(ShowEditForm);
             return cp;
+        }
+        private void ShowEditForm(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (mode == Mode.Edit)
+                {
+                    Form1.StartEditing(sender as Label);
+                }
+            }
         }
         private void TextFieldEditing(Control ctl)
         {

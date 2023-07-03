@@ -13,12 +13,18 @@ namespace sum_practise_2023
     public partial class Form1 : Form
     {
         Document dm;
+        static TFEdit fe;
         public Form1()
         {
             InitializeComponent();
             dm = new Document(main);
+            fe = new TFEdit();
         }
-
+        public static void StartEditing(Label l)
+        {
+            fe.StartParams(ref l);
+            fe.ShowDialog();
+        }
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             

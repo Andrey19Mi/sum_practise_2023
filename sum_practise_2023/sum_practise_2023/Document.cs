@@ -228,7 +228,7 @@ namespace sum_practise_2023
                 {
                     try
                     {
-                        Components.Add(new Component(new ComponentWrapper(config as TextFieldConfig).Comp, this));
+                        Components.Add(new Component(config.Construct(), this));
                     } catch
                     {
                         throw new Exception("New component add error");

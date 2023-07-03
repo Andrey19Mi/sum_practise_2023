@@ -61,15 +61,6 @@ namespace sum_practise_2023
             lb.Font = Font;
             return lb;
         }
-        public class ComponentWrapper
-        {
-            public Control Comp { get; private set; }
-
-            public ComponentWrapper(TextFieldConfig comp)
-            {
-                Comp = comp.Construct();
-            }
-        }
     }
     
 }

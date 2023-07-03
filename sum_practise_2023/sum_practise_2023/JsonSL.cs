@@ -18,7 +18,6 @@ namespace sum_practise_2023
 
         public static T Deserialize<T>(string json)
         {
-            // doesnt works right now, but will be fixed later probaly)
             return JsonSerializer.Deserialize<T>(json, options);
         }
     }

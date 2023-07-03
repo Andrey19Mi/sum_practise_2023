@@ -55,11 +55,21 @@ namespace sum_practise_2023
             if (this.Text == null || this.Font == null || this.Font == null) {
                 throw new ConfigException();
             }
-            Label lb = new Label();
+            Control lb = new Label();
             lb.Text = Text;
             lb.Location = Location;
             lb.Font = Font;
             return lb;
         }
+        public class ComponentWrapper
+        {
+            public Control Comp { get; private set; }
+
+            public ComponentWrapper(TextFieldConfig comp)
+            {
+                Comp = comp.Construct();
+            }
+        }
     }
+    
 }

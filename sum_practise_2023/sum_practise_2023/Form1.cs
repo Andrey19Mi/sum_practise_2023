@@ -17,6 +17,7 @@ namespace sum_practise_2023
         {
             InitializeComponent();
             dm = new Document(main);
+            
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -42,23 +43,27 @@ namespace sum_practise_2023
         }
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            // TODO: use file explorer dialog to chose filename where to save
-            dm.SaveComponentsToJson("SavedData.json");
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    dm.SaveComponentsToJson(sfd.FileName);
+                }
+            }
         }
         private void LoadButton_Click(object sender, EventArgs e)
         {
-            // TODO: use file explorer dialog to chose filename to load from
-            dm.LoadComponentsFromJson("SavedData.json");
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "JSON Files (*.json)|*.json";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = openFileDialog.FileName;
+                dm.LoadComponentsFromJson(filePath);
+            }
         }
 
-        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // TODO: DO shortcuts 
-            // press button to change modes
-            // e - edit
-            // m/v - view
-            // t - add text
-            // ctrl+s save file to file from where it was loaded, if none was loaded just invoke savebutton
-        }
+        
     }
 }

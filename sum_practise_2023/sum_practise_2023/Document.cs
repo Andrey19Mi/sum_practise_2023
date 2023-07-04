@@ -66,10 +66,11 @@ namespace sum_practise_2023
             }
             private void MouseDownEventHandle(object obj, MouseEventArgs e)
             {
-                if (e.Button == MouseButtons.Right)
+                if (_parent.mode == Mode.Edit)
                 {
-                    if (_parent.mode == Mode.Edit)
+                    if (e.Button == MouseButtons.Right)
                     {
+
                         // enable drag and drop 
                         if (!dragged)
                         {
@@ -79,6 +80,11 @@ namespace sum_practise_2023
                             IMLX = Cursor.Position.X;
                             IMLY = Cursor.Position.Y;
                         }
+
+                    }
+                    else if (e.Button == MouseButtons.Left)
+                    {
+                        Form1.StartEditing(obj as Label);
                     }
                 }
             }
@@ -154,19 +160,9 @@ namespace sum_practise_2023
             lb.Location = position;
             Component cp = new Component(lb, this);
             cp.EnableEditing += TextFieldEditing;
-            cp.comp.MouseDown += new MouseEventHandler(ShowEditForm);
             return cp;
         }
-        private void ShowEditForm(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                if (mode == Mode.Edit)
-                {
-                    Form1.StartEditing(sender as Label);
-                }
-            }
-        }
+
         private void TextFieldEditing(Control ctl)
         {
             // TODO: enable typing for Label

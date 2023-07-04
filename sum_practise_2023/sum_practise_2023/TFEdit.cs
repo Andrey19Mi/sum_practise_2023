@@ -19,6 +19,7 @@ namespace sum_practise_2023
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
+            LoadFonts();
         }
         private void LoadFonts()
         {
@@ -30,7 +31,6 @@ namespace sum_practise_2023
         }
         public void StartParams(ref Label l)
         {
-            LoadFonts();
             Size size;
             _source = l;
             richTextBox1.Text = _source.Text;

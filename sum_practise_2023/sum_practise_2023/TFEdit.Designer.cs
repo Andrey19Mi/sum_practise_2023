@@ -46,10 +46,9 @@
             // 
             // backButton
             // 
-            this.backButton.Location = new System.Drawing.Point(517, 249);
-            this.backButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.backButton.Location = new System.Drawing.Point(388, 202);
             this.backButton.Name = "backButton";
-            this.backButton.Size = new System.Drawing.Size(100, 28);
+            this.backButton.Size = new System.Drawing.Size(75, 23);
             this.backButton.TabIndex = 1;
             this.backButton.Text = "Close";
             this.backButton.UseVisualStyleBackColor = true;
@@ -57,10 +56,9 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(16, 144);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox1.Location = new System.Drawing.Point(12, 117);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(485, 132);
+            this.richTextBox1.Size = new System.Drawing.Size(365, 108);
             this.richTextBox1.TabIndex = 4;
             this.richTextBox1.Text = "";
             this.richTextBox1.TextChanged += new System.EventHandler(this.CloseButton_TC);
@@ -68,17 +66,15 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 17);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(9, 14);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 16);
+            this.label2.Size = new System.Drawing.Size(49, 13);
             this.label2.TabIndex = 7;
             this.label2.Text = "Font size";
             // 
             // VCButton
             // 
-            this.VCButton.Location = new System.Drawing.Point(97, 15);
-            this.VCButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.VCButton.Location = new System.Drawing.Point(73, 12);
             this.VCButton.Maximum = new decimal(new int[] {
             128,
             0,
@@ -90,7 +86,7 @@
             0,
             0});
             this.VCButton.Name = "VCButton";
-            this.VCButton.Size = new System.Drawing.Size(69, 22);
+            this.VCButton.Size = new System.Drawing.Size(52, 20);
             this.VCButton.TabIndex = 8;
             this.VCButton.Value = new decimal(new int[] {
             1,
@@ -103,27 +99,24 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(12, 81);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(9, 66);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(73, 17);
+            this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 11;
             this.label4.Text = "Width size";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 49);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(9, 40);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(73, 16);
+            this.label3.Size = new System.Drawing.Size(59, 13);
             this.label3.TabIndex = 9;
             this.label3.Text = "Height size";
             // 
             // HSButton
             // 
-            this.HSButton.Location = new System.Drawing.Point(97, 47);
-            this.HSButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HSButton.Location = new System.Drawing.Point(73, 38);
             this.HSButton.Maximum = new decimal(new int[] {
             200000,
             0,
@@ -135,7 +128,7 @@
             0,
             0});
             this.HSButton.Name = "HSButton";
-            this.HSButton.Size = new System.Drawing.Size(69, 22);
+            this.HSButton.Size = new System.Drawing.Size(52, 20);
             this.HSButton.TabIndex = 10;
             this.HSButton.Value = new decimal(new int[] {
             1,
@@ -146,8 +139,7 @@
             // 
             // WSButton
             // 
-            this.WSButton.Location = new System.Drawing.Point(97, 79);
-            this.WSButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.WSButton.Location = new System.Drawing.Point(73, 64);
             this.WSButton.Maximum = new decimal(new int[] {
             200000,
             0,
@@ -159,7 +151,7 @@
             0,
             0});
             this.WSButton.Name = "WSButton";
-            this.WSButton.Size = new System.Drawing.Size(69, 22);
+            this.WSButton.Size = new System.Drawing.Size(52, 20);
             this.WSButton.TabIndex = 12;
             this.WSButton.Value = new decimal(new int[] {
             1,
@@ -178,20 +170,18 @@
             "Italic",
             "Underline",
             "Strikeout"});
-            this.checkedListTS.Location = new System.Drawing.Point(519, 144);
-            this.checkedListTS.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkedListTS.Location = new System.Drawing.Point(389, 117);
             this.checkedListTS.Name = "checkedListTS";
-            this.checkedListTS.Size = new System.Drawing.Size(97, 76);
+            this.checkedListTS.Size = new System.Drawing.Size(74, 64);
             this.checkedListTS.TabIndex = 14;
             this.checkedListTS.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListTS_ItemCheck);
             // 
             // FontBox
             // 
             this.FontBox.FormattingEnabled = true;
-            this.FontBox.Location = new System.Drawing.Point(97, 111);
-            this.FontBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.FontBox.Location = new System.Drawing.Point(73, 90);
             this.FontBox.Name = "FontBox";
-            this.FontBox.Size = new System.Drawing.Size(519, 24);
+            this.FontBox.Size = new System.Drawing.Size(390, 21);
             this.FontBox.TabIndex = 15;
             this.FontBox.SelectedIndexChanged += new System.EventHandler(this.FontBox_SelectedIndexChanged);
             // 
@@ -199,18 +189,17 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(12, 114);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(9, 93);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 17);
+            this.label1.Size = new System.Drawing.Size(62, 13);
             this.label1.TabIndex = 16;
             this.label1.Text = "Current font";
             // 
             // TFEdit
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(633, 294);
+            this.ClientSize = new System.Drawing.Size(475, 239);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.FontBox);
             this.Controls.Add(this.checkedListTS);
@@ -222,7 +211,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.backButton);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "TFEdit";
             this.Text = "TFEdit";
             ((System.ComponentModel.ISupportInitialize)(this.VCButton)).EndInit();

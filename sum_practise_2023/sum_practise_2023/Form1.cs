@@ -92,7 +92,30 @@ namespace sum_practise_2023
 
         private void PDFConvert_Button_Click(object sender, EventArgs e)
         {
-            dm.ConvertPanelToPDF(main);
+            // Создаем экземпляр SaveFileDialog
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            // Устанавливаем фильтр для типа файлов
+            saveFileDialog.Filter = "PDF Files|*.pdf";
+
+            // Показываем диалоговое окно для сохранения файла
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // Получаем путь к файлу
+                    var filePath = saveFileDialog.FileName;
+
+                    // Передаем путь файла в функцию создания PDF
+                    dm.ConvertPanelToPDF(main, filePath);
+                }
+                catch (Exception ex)
+                {
+                    // Обработайте исключение, как это нужно в вашем приложении
+                    MessageBox.Show("Error: Could not save file. " + ex.Message);
+                }
+
+            }
         }
     }
 }

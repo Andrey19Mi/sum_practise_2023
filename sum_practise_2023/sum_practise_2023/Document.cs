@@ -168,10 +168,10 @@ namespace sum_practise_2023
             // that can be achieved by spawning a textbox somewhere, that will update text of label, and despawn it when it loses focus or escaped pressed.
         }
 
-        public void ConvertPanelToPDF(Panel panel)
+        public void ConvertPanelToPDF(Panel panel, string filePath)
         {
             iTextSharp.text.Document doc = new iTextSharp.text.Document();
-            PdfWriter.GetInstance(doc, new FileStream("Panel.pdf", FileMode.Create));
+            PdfWriter.GetInstance(doc, new FileStream(filePath, FileMode.Create));
             doc.Open();
             using (Bitmap bitmap = new Bitmap(panel.Width, panel.Height))
             {

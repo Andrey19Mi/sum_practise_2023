@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using static sum_practise_2023.TextFieldConfig;
 /*
 using System.Threading.Tasks;
 using System.Linq;
@@ -15,12 +16,12 @@ using System.Text.Json;
 */
 namespace sum_practise_2023
 {
-    
+
     internal class Document
     {
         // Control wrapper
         // wraps any control for storing such as text boxes or images, so that they can easily all be edited and evoke different events in editor
-        public class Component
+        public class Component : IDisposable
         {
             public delegate void ControlAction(Control comp);
             public ControlAction EnableEditing; 
@@ -28,6 +29,7 @@ namespace sum_practise_2023
             protected Document _parent;
             protected bool dragged;
             private int IMLX,IMLY,ICLX,ICLY;
+
             // takes a control(eg textbox or button or anything else)
             public Component(Control c,Document parent)
             {
@@ -48,9 +50,11 @@ namespace sum_practise_2023
                 comp.MouseUp += this.MouseUpEventHandle;
                 comp.MouseMove += this.MouseMoveEventHandle;
             }
+
+
             ~Component()
             {
-                //_parent._render.Controls.Remove(comp);
+                Dispose();
             }
             private void DoubleClickEventHandle(object obj, EventArgs e)
             {
@@ -104,7 +108,13 @@ namespace sum_practise_2023
                     comp.Location = newLoc;
                 }
             }
-            
+
+            public void Dispose()
+            {
+                _parent._render.Controls.Remove(comp);
+                ((IDisposable)comp).Dispose();
+            }
+
             // this needs to be overwritten
             //abstract public object Parameters{get;set;}
         }
@@ -177,23 +187,78 @@ namespace sum_practise_2023
             List<Config> cfg = new List<Config>();
             foreach(var ctl in Components)
             {
-                if(ctl.comp is Label)
+                try
                 {
-                    TextFieldConfig c = new TextFieldConfig();
-                    c.Deconstruct(ctl.comp);
+                    Config c;
+                    if (ctl.comp is Label)
+                    {
+                        c = new TextFieldConfig();
+                        c.Deconstruct(ctl.comp);
+                    }// to ensure that we can easily add configs of other types, 
+                    else
+                    {
+                        throw new Exception();
+                    }
                     cfg.Add(c);
+                }catch
+                {
+                    throw new Exception("Сomponent deconstruction error");
                 }
             }
-            // TODO: catch exceptions and rethrow a custom fatal exception
-            File.WriteAllText(SavePath, JsonSL.Serialize(cfg));
+            try
+            {
+                File.WriteAllText(SavePath, JsonSL.Serialize(cfg));
+            } catch
+            {
+                throw new Exception("Writing to the file error");
+            }
+            
+        }
+        private void DeleteComponents()
+        {
+            
+            foreach (var comp in Components)
+            {
+                comp.Dispose();
+            }
+            Components.Clear();
         }
         public void LoadComponentsFromJson(string LoadPath)
         {
             // TODO: same here, rethrow an exception with more vivid discription that the file is'nt in the right format
             // fix an error of loading - throws an exception for some reason idk why yet
-            List<Config> cfg = JsonSL.Deserialize<List<Config>>(LoadPath);
-            foreach(var ctl in cfg){
-                _components.Add(new Component(ctl.Construct(),this));
+            // TODO: check if file exists and handle exceptions
+            string jsonString;
+            List<Config> configs;
+
+            try
+            {
+                jsonString = File.ReadAllText(LoadPath);
+            } catch
+            {
+                throw new Exception("File reading error");
+            }
+            try
+            {
+                configs = JsonSL.Deserialize<List<Config>>(jsonString);
+            } catch
+            {
+                throw new Exception("File deserialize error");
+            }
+            DeleteComponents();
+            foreach (var config in configs)
+            {
+                if (config is TextFieldConfig)
+                {
+                    try
+                    {
+                        Components.Add(new Component(config.Construct(), this));
+                    } catch
+                    {
+                        throw new Exception("New component add error");
+                    }
+                    
+                }
             }
             // also we should catch that exception in the form and give user a notice that the file is corrupted or is not in the right format
         }

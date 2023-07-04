@@ -70,10 +70,11 @@ namespace sum_practise_2023
             }
             private void MouseDownEventHandle(object obj, MouseEventArgs e)
             {
-                if (e.Button == MouseButtons.Right)
+                if (_parent.mode == Mode.Edit)
                 {
-                    if (_parent.mode == Mode.Edit)
+                    if (e.Button == MouseButtons.Right)
                     {
+
                         // enable drag and drop 
                         if (!dragged)
                         {
@@ -83,6 +84,7 @@ namespace sum_practise_2023
                             IMLX = Cursor.Position.X;
                             IMLY = Cursor.Position.Y;
                         }
+
                     }
                 }
             }
@@ -162,14 +164,17 @@ namespace sum_practise_2023
             lb.Text = "Text";
             lb.BackColor = Color.Transparent;
             lb.Location = position;
+            lb.AutoSize = true;
             Component cp = new Component(lb, this);
             cp.EnableEditing += TextFieldEditing;
             return cp;
         }
+
         private void TextFieldEditing(Control ctl)
         {
             // TODO: enable typing for Label
             // that can be achieved by spawning a textbox somewhere, that will update text of label, and despawn it when it loses focus or escaped pressed.
+            Form1.StartEditing(ctl as Label);
         }
 
 

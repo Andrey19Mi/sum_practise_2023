@@ -13,12 +13,15 @@ namespace sum_practise_2023
     public partial class Form1 : Form
     {
         Document dm;
+        static TFEdit fe;
         SaveFileDialog sfd;
         OpenFileDialog ofd;
+
         public Form1()
         {
             InitializeComponent();
             dm = new Document(main);
+            fe = new TFEdit();
             KeyDown += Form1_KeyDown;
             KeyPreview = true;
             sfd = new SaveFileDialog();
@@ -30,7 +33,12 @@ namespace sum_practise_2023
             ofd.CheckPathExists = true;
             ofd.RestoreDirectory = true;
         }
-
+        public static void StartEditing(Label l)
+        {
+            fe.StartParams(ref l);
+            fe.ShowDialog();
+            
+        }
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             

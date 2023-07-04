@@ -34,6 +34,7 @@
             this.AddTextButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
+            this.PDFConvert_Button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // main
@@ -41,19 +42,19 @@
             this.main.AutoScroll = true;
             this.main.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.main.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.main.Location = new System.Drawing.Point(0, 38);
-            this.main.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.main.Location = new System.Drawing.Point(0, 31);
+            this.main.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.main.Name = "main";
-            this.main.Size = new System.Drawing.Size(800, 412);
+            this.main.Size = new System.Drawing.Size(600, 335);
             this.main.TabIndex = 0;
             this.main.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // MoveButton
             // 
-            this.MoveButton.Location = new System.Drawing.Point(12, 9);
-            this.MoveButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MoveButton.Location = new System.Drawing.Point(9, 7);
+            this.MoveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MoveButton.Name = "MoveButton";
-            this.MoveButton.Size = new System.Drawing.Size(29, 23);
+            this.MoveButton.Size = new System.Drawing.Size(22, 19);
             this.MoveButton.TabIndex = 1;
             this.MoveButton.Text = "M";
             this.MoveButton.UseVisualStyleBackColor = true;
@@ -61,10 +62,10 @@
             // 
             // EditButton
             // 
-            this.EditButton.Location = new System.Drawing.Point(47, 9);
-            this.EditButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.EditButton.Location = new System.Drawing.Point(35, 7);
+            this.EditButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.EditButton.Name = "EditButton";
-            this.EditButton.Size = new System.Drawing.Size(29, 23);
+            this.EditButton.Size = new System.Drawing.Size(22, 19);
             this.EditButton.TabIndex = 2;
             this.EditButton.Text = "E";
             this.EditButton.UseVisualStyleBackColor = true;
@@ -72,10 +73,10 @@
             // 
             // AddTextButton
             // 
-            this.AddTextButton.Location = new System.Drawing.Point(83, 9);
-            this.AddTextButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.AddTextButton.Location = new System.Drawing.Point(62, 7);
+            this.AddTextButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.AddTextButton.Name = "AddTextButton";
-            this.AddTextButton.Size = new System.Drawing.Size(29, 23);
+            this.AddTextButton.Size = new System.Drawing.Size(22, 19);
             this.AddTextButton.TabIndex = 3;
             this.AddTextButton.Text = "T";
             this.AddTextButton.UseVisualStyleBackColor = true;
@@ -83,10 +84,10 @@
             // 
             // LoadButton
             // 
-            this.LoadButton.Location = new System.Drawing.Point(756, 9);
-            this.LoadButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LoadButton.Location = new System.Drawing.Point(567, 7);
+            this.LoadButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.LoadButton.Name = "LoadButton";
-            this.LoadButton.Size = new System.Drawing.Size(29, 23);
+            this.LoadButton.Size = new System.Drawing.Size(22, 19);
             this.LoadButton.TabIndex = 4;
             this.LoadButton.Text = "L";
             this.LoadButton.UseVisualStyleBackColor = true;
@@ -94,27 +95,39 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(721, 9);
-            this.SaveButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.SaveButton.Location = new System.Drawing.Point(541, 7);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(29, 23);
+            this.SaveButton.Size = new System.Drawing.Size(22, 19);
             this.SaveButton.TabIndex = 5;
             this.SaveButton.Text = "S";
             this.SaveButton.UseVisualStyleBackColor = true;
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
+            // PDFConvert_Button
+            // 
+            this.PDFConvert_Button.Location = new System.Drawing.Point(493, 7);
+            this.PDFConvert_Button.Margin = new System.Windows.Forms.Padding(2);
+            this.PDFConvert_Button.Name = "PDFConvert_Button";
+            this.PDFConvert_Button.Size = new System.Drawing.Size(44, 19);
+            this.PDFConvert_Button.TabIndex = 6;
+            this.PDFConvert_Button.Text = "PDF";
+            this.PDFConvert_Button.UseVisualStyleBackColor = true;
+            this.PDFConvert_Button.Click += new System.EventHandler(this.PDFConvert_Button_Click);
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(600, 366);
+            this.Controls.Add(this.PDFConvert_Button);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.LoadButton);
             this.Controls.Add(this.AddTextButton);
             this.Controls.Add(this.EditButton);
             this.Controls.Add(this.MoveButton);
             this.Controls.Add(this.main);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -129,6 +142,7 @@
         private System.Windows.Forms.Button AddTextButton;
         private System.Windows.Forms.Button LoadButton;
         private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.Button PDFConvert_Button;
     }
 }
 

@@ -89,5 +89,10 @@ namespace sum_practise_2023
                 SaveButton_Click(sender, e);
             }
         }
+
+        private void PDFConvert_Button_Click(object sender, EventArgs e)
+        {
+            dm.ConvertPanelToPDF(main);
+        }
     }
 }

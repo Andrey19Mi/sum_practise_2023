@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using iTextSharp;
 using static sum_practise_2023.TextFieldConfig;
+using iTextSharp.text.pdf;
 /*
 using System.Threading.Tasks;
 using System.Linq;
@@ -166,6 +168,24 @@ namespace sum_practise_2023
             // that can be achieved by spawning a textbox somewhere, that will update text of label, and despawn it when it loses focus or escaped pressed.
         }
 
+        public void ConvertPanelToPDF(Panel panel)
+        {
+            iTextSharp.text.Document doc = new iTextSharp.text.Document();
+            PdfWriter.GetInstance(doc, new FileStream("Panel.pdf", FileMode.Create));
+            doc.Open();
+            using (Bitmap bitmap = new Bitmap(panel.Width, panel.Height))
+            {
+                panel.DrawToBitmap(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+                    byte[] imageBytes = stream.ToArray();
+                    iTextSharp.text.Image pdfImage = iTextSharp.text.Image.GetInstance(imageBytes);
+                    doc.Add(pdfImage);
+                }
+            }
+            doc.Close();
+        }
 
         // Save and load state from json
 

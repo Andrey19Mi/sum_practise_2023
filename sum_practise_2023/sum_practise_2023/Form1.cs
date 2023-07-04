@@ -33,6 +33,33 @@ namespace sum_practise_2023
             ofd.CheckPathExists = true;
             ofd.RestoreDirectory = true;
         }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            SettingsForm settingsForm = new SettingsForm();
+            CreatePanel(ref settingsForm);
+        }
+        private void CreatePanel(ref SettingsForm settingsForm)
+        {
+            
+            
+            if (settingsForm.ShowDialog() == DialogResult.OK)
+            {
+                int width, height;
+                if (int.TryParse(settingsForm.WidthText, out width) && int.TryParse(settingsForm.HeightText, out height))
+                {
+                    Width = width;
+                    main.Height = height;
+                    Height = height + panel1.Height + 40;
+                }
+                if (settingsForm.CreateNew)
+                {
+                    while (main.Controls.Count > 0)
+                    {
+                        main.Controls[0].Dispose();
+                    }
+                }
+            }
+        }
         public static void StartEditing(Label l)
         {
             fe.StartParams(ref l);
@@ -98,6 +125,13 @@ namespace sum_practise_2023
             {
                 SaveButton_Click(sender, e);
             }
+        }
+
+        private void CreateNewButton_Click(object sender, EventArgs e)
+        {
+            SettingsForm settingsForm = new SettingsForm();
+            settingsForm.CheckBox.Visible = true;
+            CreatePanel(ref settingsForm);
         }
     }
 }

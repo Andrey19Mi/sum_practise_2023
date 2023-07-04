@@ -82,10 +82,6 @@ namespace sum_practise_2023
                         }
 
                     }
-                    else if (e.Button == MouseButtons.Left)
-                    {
-                        Form1.StartEditing(obj as Label);
-                    }
                 }
             }
             private void MouseUpEventHandle(object obj, MouseEventArgs e)
@@ -158,6 +154,7 @@ namespace sum_practise_2023
             lb.Text = "Text";
             lb.BackColor = Color.Transparent;
             lb.Location = position;
+            lb.AutoSize = true;
             Component cp = new Component(lb, this);
             cp.EnableEditing += TextFieldEditing;
             return cp;
@@ -167,6 +164,7 @@ namespace sum_practise_2023
         {
             // TODO: enable typing for Label
             // that can be achieved by spawning a textbox somewhere, that will update text of label, and despawn it when it loses focus or escaped pressed.
+            Form1.StartEditing(ctl as Label);
         }
 
 

@@ -23,11 +23,13 @@ namespace sum_practise_2023
         public string WidthText
         {
             get { return widthTextBox.Text; }
+            set { widthTextBox.Text = value;}
         }
 
         public string HeightText
         {
             get { return heightTextBox.Text; }
+            set { heightTextBox.Text = value; }
         }
 
         public bool CreateNew

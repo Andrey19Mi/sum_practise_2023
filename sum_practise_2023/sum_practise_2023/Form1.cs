@@ -16,6 +16,7 @@ namespace sum_practise_2023
         static TFEdit fe;
         SaveFileDialog sfd;
         OpenFileDialog ofd;
+        SettingsForm settingsForm;
 
         public Form1()
         {
@@ -32,16 +33,17 @@ namespace sum_practise_2023
             ofd.Filter = "JSON Files (*.json)|*.json";
             ofd.CheckPathExists = true;
             ofd.RestoreDirectory = true;
+            settingsForm = new SettingsForm();
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            SettingsForm settingsForm = new SettingsForm();
             CreatePanel(ref settingsForm);
         }
         private void CreatePanel(ref SettingsForm settingsForm)
         {
-            
-            
+
+            settingsForm.WidthText = (main.Width + 16).ToString();
+            settingsForm.HeightText = main.Height.ToString();
             if (settingsForm.ShowDialog() == DialogResult.OK)
             {
                 int width, height;
@@ -137,7 +139,6 @@ namespace sum_practise_2023
 
         private void CreateNewButton_Click(object sender, EventArgs e)
         {
-            SettingsForm settingsForm = new SettingsForm();
             settingsForm.CheckBox.Visible = true;
             CreatePanel(ref settingsForm);
         }

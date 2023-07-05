@@ -47,9 +47,7 @@ namespace sum_practise_2023
                 int width, height;
                 if (int.TryParse(settingsForm.WidthText, out width) && int.TryParse(settingsForm.HeightText, out height))
                 {
-                    Width = width;
-                    main.Height = height;
-                    Height = height + panel1.Height + 40;
+                    SetPanelSize(width, height);
                 }
                 if (settingsForm.CreateNew)
                 {
@@ -59,6 +57,12 @@ namespace sum_practise_2023
                     }
                 }
             }
+        }
+        private void SetPanelSize(int width, int height)
+        {
+            Width = width;
+            main.Height = height;
+            Height = height + panel1.Height + 40;
         }
         public static void StartEditing(Label l)
         {
@@ -136,6 +140,11 @@ namespace sum_practise_2023
             SettingsForm settingsForm = new SettingsForm();
             settingsForm.CheckBox.Visible = true;
             CreatePanel(ref settingsForm);
+        }
+
+        private void FormResizeEnd(object sender, EventArgs e)
+        {
+            SetPanelSize(Width, Height - (panel1.Height + 40));
         }
     }
 }

@@ -45,7 +45,7 @@
             this.main.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.main.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.main.Location = new System.Drawing.Point(0, 26);
-            this.main.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.main.Margin = new System.Windows.Forms.Padding(2);
             this.main.Name = "main";
             this.main.Size = new System.Drawing.Size(484, 285);
             this.main.TabIndex = 0;
@@ -55,7 +55,7 @@
             // 
             this.MoveButton.Dock = System.Windows.Forms.DockStyle.Left;
             this.MoveButton.Location = new System.Drawing.Point(22, 0);
-            this.MoveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MoveButton.Margin = new System.Windows.Forms.Padding(2);
             this.MoveButton.Name = "MoveButton";
             this.MoveButton.Size = new System.Drawing.Size(22, 25);
             this.MoveButton.TabIndex = 1;
@@ -67,7 +67,7 @@
             // 
             this.EditButton.Dock = System.Windows.Forms.DockStyle.Left;
             this.EditButton.Location = new System.Drawing.Point(0, 0);
-            this.EditButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.EditButton.Margin = new System.Windows.Forms.Padding(2);
             this.EditButton.Name = "EditButton";
             this.EditButton.Size = new System.Drawing.Size(22, 25);
             this.EditButton.TabIndex = 2;
@@ -79,7 +79,7 @@
             // 
             this.AddTextButton.Dock = System.Windows.Forms.DockStyle.Left;
             this.AddTextButton.Location = new System.Drawing.Point(44, 0);
-            this.AddTextButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.AddTextButton.Margin = new System.Windows.Forms.Padding(2);
             this.AddTextButton.Name = "AddTextButton";
             this.AddTextButton.Size = new System.Drawing.Size(22, 25);
             this.AddTextButton.TabIndex = 3;
@@ -91,7 +91,7 @@
             // 
             this.LoadButton.Dock = System.Windows.Forms.DockStyle.Right;
             this.LoadButton.Location = new System.Drawing.Point(462, 0);
-            this.LoadButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.LoadButton.Margin = new System.Windows.Forms.Padding(2);
             this.LoadButton.Name = "LoadButton";
             this.LoadButton.Size = new System.Drawing.Size(22, 25);
             this.LoadButton.TabIndex = 4;
@@ -103,7 +103,7 @@
             // 
             this.SaveButton.Dock = System.Windows.Forms.DockStyle.Right;
             this.SaveButton.Location = new System.Drawing.Point(440, 0);
-            this.SaveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(2);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(22, 25);
             this.SaveButton.TabIndex = 5;
@@ -147,10 +147,11 @@
             this.ClientSize = new System.Drawing.Size(484, 311);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.main);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.ResizeEnd += new System.EventHandler(this.FormResizeEnd);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

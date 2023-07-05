@@ -121,9 +121,13 @@ namespace sum_practise_2023
             {
                 AddTextButton_Click(sender, e);
             }
-            if (e.Control && e.KeyCode == Keys.S)
+            else if (e.Control && e.KeyCode == Keys.S)
             {
                 SaveButton_Click(sender, e);
+            }
+            else if (e.Control && e.KeyCode == Keys.F)
+            {
+                CreateNewButton_Click(sender, e);
             }
         }
 

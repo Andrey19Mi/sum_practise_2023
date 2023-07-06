@@ -43,21 +43,21 @@
             // 
             this.main.AutoScroll = true;
             this.main.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.main.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.main.Location = new System.Drawing.Point(0, 26);
-            this.main.Margin = new System.Windows.Forms.Padding(2);
+            this.main.Location = new System.Drawing.Point(0, 32);
+            this.main.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.main.Name = "main";
-            this.main.Size = new System.Drawing.Size(484, 285);
+            this.main.Size = new System.Drawing.Size(645, 351);
             this.main.TabIndex = 0;
+            this.main.SizeChanged += new System.EventHandler(this.main_SizeChanged);
             this.main.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // MoveButton
             // 
             this.MoveButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this.MoveButton.Location = new System.Drawing.Point(22, 0);
-            this.MoveButton.Margin = new System.Windows.Forms.Padding(2);
+            this.MoveButton.Location = new System.Drawing.Point(29, 0);
+            this.MoveButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MoveButton.Name = "MoveButton";
-            this.MoveButton.Size = new System.Drawing.Size(22, 25);
+            this.MoveButton.Size = new System.Drawing.Size(29, 31);
             this.MoveButton.TabIndex = 1;
             this.MoveButton.Text = "M";
             this.MoveButton.UseVisualStyleBackColor = true;
@@ -67,9 +67,9 @@
             // 
             this.EditButton.Dock = System.Windows.Forms.DockStyle.Left;
             this.EditButton.Location = new System.Drawing.Point(0, 0);
-            this.EditButton.Margin = new System.Windows.Forms.Padding(2);
+            this.EditButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.EditButton.Name = "EditButton";
-            this.EditButton.Size = new System.Drawing.Size(22, 25);
+            this.EditButton.Size = new System.Drawing.Size(29, 31);
             this.EditButton.TabIndex = 2;
             this.EditButton.Text = "E";
             this.EditButton.UseVisualStyleBackColor = true;
@@ -78,10 +78,10 @@
             // AddTextButton
             // 
             this.AddTextButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this.AddTextButton.Location = new System.Drawing.Point(44, 0);
-            this.AddTextButton.Margin = new System.Windows.Forms.Padding(2);
+            this.AddTextButton.Location = new System.Drawing.Point(58, 0);
+            this.AddTextButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AddTextButton.Name = "AddTextButton";
-            this.AddTextButton.Size = new System.Drawing.Size(22, 25);
+            this.AddTextButton.Size = new System.Drawing.Size(29, 31);
             this.AddTextButton.TabIndex = 3;
             this.AddTextButton.Text = "T";
             this.AddTextButton.UseVisualStyleBackColor = true;
@@ -90,10 +90,10 @@
             // LoadButton
             // 
             this.LoadButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.LoadButton.Location = new System.Drawing.Point(462, 0);
-            this.LoadButton.Margin = new System.Windows.Forms.Padding(2);
+            this.LoadButton.Location = new System.Drawing.Point(616, 0);
+            this.LoadButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LoadButton.Name = "LoadButton";
-            this.LoadButton.Size = new System.Drawing.Size(22, 25);
+            this.LoadButton.Size = new System.Drawing.Size(29, 31);
             this.LoadButton.TabIndex = 4;
             this.LoadButton.Text = "L";
             this.LoadButton.UseVisualStyleBackColor = true;
@@ -102,10 +102,10 @@
             // SaveButton
             // 
             this.SaveButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.SaveButton.Location = new System.Drawing.Point(440, 0);
-            this.SaveButton.Margin = new System.Windows.Forms.Padding(2);
+            this.SaveButton.Location = new System.Drawing.Point(587, 0);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(22, 25);
+            this.SaveButton.Size = new System.Drawing.Size(29, 31);
             this.SaveButton.TabIndex = 5;
             this.SaveButton.Text = "S";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -124,17 +124,18 @@
             this.panel1.Cursor = System.Windows.Forms.Cursors.Default;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(484, 25);
+            this.panel1.Size = new System.Drawing.Size(645, 31);
             this.panel1.TabIndex = 6;
             // 
             // CreateNewButton
             // 
             this.CreateNewButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.CreateNewButton.Location = new System.Drawing.Point(418, 0);
-            this.CreateNewButton.Margin = new System.Windows.Forms.Padding(2);
+            this.CreateNewButton.Location = new System.Drawing.Point(558, 0);
+            this.CreateNewButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CreateNewButton.Name = "CreateNewButton";
-            this.CreateNewButton.Size = new System.Drawing.Size(22, 25);
+            this.CreateNewButton.Size = new System.Drawing.Size(29, 31);
             this.CreateNewButton.TabIndex = 6;
             this.CreateNewButton.Text = "F";
             this.CreateNewButton.UseVisualStyleBackColor = true;
@@ -142,16 +143,17 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 311);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.ClientSize = new System.Drawing.Size(645, 383);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.main);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.ResizeEnd += new System.EventHandler(this.FormResizeEnd);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

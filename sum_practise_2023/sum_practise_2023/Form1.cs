@@ -12,17 +12,20 @@ namespace sum_practise_2023
 {
     public partial class Form1 : Form
     {
+        
         Document dm;
         static TFEdit fe;
         SaveFileDialog sfd;
         OpenFileDialog ofd;
         SettingsForm settingsForm;
+        bool once = true;
 
         public Form1()
         {
             InitializeComponent();
             dm = new Document(main);
             fe = new TFEdit();
+            
             KeyDown += Form1_KeyDown;
             KeyPreview = true;
             sfd = new SaveFileDialog();
@@ -37,34 +40,26 @@ namespace sum_practise_2023
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            CreatePanel(ref settingsForm);
+            
         }
         private void CreatePanel(ref SettingsForm settingsForm)
         {
-
-            settingsForm.WidthText = (main.Width + 16).ToString();
-            settingsForm.HeightText = main.Height.ToString();
+            PointF dpi = dm.getDPI();
+            
+            settingsForm.WidthText = ( ((float)main.Width)/dpi.X ).ToString();
+            settingsForm.HeightText = ( ((float)main.Height)/dpi.Y ).ToString();
             if (settingsForm.ShowDialog() == DialogResult.OK)
             {
-                int width, height;
-                if (int.TryParse(settingsForm.WidthText, out width) && int.TryParse(settingsForm.HeightText, out height))
+                float width, height;
+                if (float.TryParse(settingsForm.WidthText, out width) && float.TryParse(settingsForm.HeightText, out height))
                 {
-                    SetPanelSize(width, height);
+                    dm.Size = new PointF(width, height);
                 }
                 if (settingsForm.CreateNew)
                 {
-                    while (main.Controls.Count > 0)
-                    {
-                        main.Controls[0].Dispose();
-                    }
+                    dm.DeleteComponents();
                 }
             }
-        }
-        private void SetPanelSize(int width, int height)
-        {
-            Width = width;
-            main.Height = height;
-            Height = height + panel1.Height + 40;
         }
         public static void StartEditing(Label l)
         {
@@ -74,7 +69,12 @@ namespace sum_practise_2023
         }
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            
+            if (once)
+            {
+                
+                once = false;
+                CreatePanel(ref settingsForm);
+            }
         }
 
         // enables moving motion
@@ -134,6 +134,10 @@ namespace sum_practise_2023
             else if (e.Control && e.KeyCode == Keys.F)
             {
                 CreateNewButton_Click(sender, e);
+            }else if (e.Control && e.KeyCode == Keys.P)
+            {
+                // print  TODO : need to make a button
+                dm.SaveComponentsToPDF("document.pdf");
             }
         }
 
@@ -143,9 +147,10 @@ namespace sum_practise_2023
             CreatePanel(ref settingsForm);
         }
 
-        private void FormResizeEnd(object sender, EventArgs e)
+        private void main_SizeChanged(object sender, EventArgs e)
         {
-            SetPanelSize(Width, Height - (panel1.Height + 40));
+            this.Size = new Size(main.Width,main.Height + panel1.Height + 40);
+            
         }
     }
 }

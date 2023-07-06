@@ -12,16 +12,20 @@ namespace sum_practise_2023
 {
     public partial class Form1 : Form
     {
+        
         Document dm;
         static TFEdit fe;
         SaveFileDialog sfd;
         OpenFileDialog ofd;
+        SettingsForm settingsForm;
+        bool once = true;
 
         public Form1()
         {
             InitializeComponent();
             dm = new Document(main);
             fe = new TFEdit();
+            
             KeyDown += Form1_KeyDown;
             KeyPreview = true;
             sfd = new SaveFileDialog();
@@ -32,6 +36,30 @@ namespace sum_practise_2023
             ofd.Filter = "JSON Files (*.json)|*.json";
             ofd.CheckPathExists = true;
             ofd.RestoreDirectory = true;
+            settingsForm = new SettingsForm();
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
+        }
+        private void CreatePanel(ref SettingsForm settingsForm)
+        {
+            PointF dpi = dm.getDPI();
+            
+            settingsForm.WidthText = ( ((float)main.Width)/dpi.X ).ToString();
+            settingsForm.HeightText = ( ((float)main.Height)/dpi.Y ).ToString();
+            if (settingsForm.ShowDialog() == DialogResult.OK)
+            {
+                float width, height;
+                if (float.TryParse(settingsForm.WidthText, out width) && float.TryParse(settingsForm.HeightText, out height))
+                {
+                    dm.Size = new PointF(width, height);
+                }
+                if (settingsForm.CreateNew)
+                {
+                    dm.DeleteComponents();
+                }
+            }
         }
         public static void StartEditing(Label l)
         {
@@ -41,7 +69,12 @@ namespace sum_practise_2023
         }
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            
+            if (once)
+            {
+                
+                once = false;
+                CreatePanel(ref settingsForm);
+            }
         }
 
         // enables moving motion
@@ -94,10 +127,30 @@ namespace sum_practise_2023
             {
                 AddTextButton_Click(sender, e);
             }
-            if (e.Control && e.KeyCode == Keys.S)
+            else if (e.Control && e.KeyCode == Keys.S)
             {
                 SaveButton_Click(sender, e);
             }
+            else if (e.Control && e.KeyCode == Keys.F)
+            {
+                CreateNewButton_Click(sender, e);
+            }else if (e.Control && e.KeyCode == Keys.P)
+            {
+                // print  TODO : need to make a button
+                dm.SaveComponentsToPDF("document.pdf");
+            }
+        }
+
+        private void CreateNewButton_Click(object sender, EventArgs e)
+        {
+            settingsForm.CheckBox.Visible = true;
+            CreatePanel(ref settingsForm);
+        }
+
+        private void main_SizeChanged(object sender, EventArgs e)
+        {
+            this.Size = new Size(main.Width,main.Height + panel1.Height + 40);
+            
         }
     }
 }

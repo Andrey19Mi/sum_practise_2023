@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using iTextSharp;
 using static sum_practise_2023.TextFieldConfig;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 /*
 using System.Threading.Tasks;
 using System.Linq;
@@ -16,7 +19,12 @@ using System.Text.Json;
 */
 namespace sum_practise_2023
 {
-
+    internal struct DocumentConfig
+    {
+        public List<Config> elems { get; set; }
+        public float height { get; set; }
+        public float width { get; set; }
+    }
     internal class Document
     {
         // Control wrapper
@@ -130,7 +138,9 @@ namespace sum_practise_2023
             
             _render = render_surface;
             _render.AutoSize = false;
-            _render.AutoScroll = true;
+            _render.AutoScroll = false;
+            _render.HorizontalScroll.Enabled = false;
+            _render.VerticalScroll.Enabled = false;
             _components = new List<Component>();
 
             _render.MouseClick += this.MouseClickEventHandle;
@@ -180,12 +190,22 @@ namespace sum_practise_2023
 
         // Save and load state from json
 
-        public void SaveComponentsToJson(string SavePath)
+        public PointF getDPI()
         {
-            // need to save size w/h and etc
+            Graphics g = _render.CreateGraphics();
+            PointF dpi = new PointF();
+            try { dpi.X = g.DpiX; dpi.Y = g.DpiY; }
+            catch { throw new Exception("Fatal error: couldn't get dpi"); }
+            finally { g.Dispose(); }
+            return dpi;
+        }
+
+        public DocumentConfig getConfig()
+        {
+            DocumentConfig ret = new DocumentConfig();
+            ret.elems = new List<Config>();
             // create a helper container that will be serialized
-            List<Config> cfg = new List<Config>();
-            foreach(var ctl in Components)
+            foreach (var ctl in Components)
             {
                 try
                 {
@@ -199,12 +219,20 @@ namespace sum_practise_2023
                     {
                         throw new Exception();
                     }
-                    cfg.Add(c);
-                }catch
+                    ret.elems.Add(c);
+                }
+                catch
                 {
                     throw new Exception("Сomponent deconstruction error");
                 }
             }
+            ret.width = Size.X; ret.height = Size.Y;
+            return ret;
+        }
+
+        public void SaveComponentsToJson(string SavePath)
+        {
+            var cfg = getConfig();
             try
             {
                 File.WriteAllText(SavePath, JsonSL.Serialize(cfg));
@@ -214,7 +242,40 @@ namespace sum_practise_2023
             }
             
         }
-        private void DeleteComponents()
+        public void SaveComponentsToPDF(string SavePath)
+        {
+            var cfg = getConfig();
+            try
+            {
+                FileStream fs = new FileStream(SavePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
+                iTextSharp.text.Document saveFile = new iTextSharp.text.Document(new iTextSharp.text.Rectangle(cfg.width,cfg.height),0,0,0,0);
+                saveFile.Open();
+                var writer = PdfWriter.GetInstance(saveFile, fs);
+                writer.Open();
+                var cb = writer.DirectContentUnder;
+                foreach (var comp in cfg.elems)
+                {
+                    if(comp is TextFieldConfig)
+                    {
+                        var tfc = (TextFieldConfig)comp;
+                        var ft = new System.Drawing.Font(new FontFamily(tfc.FamilyName),tfc.Size);
+                        
+                        // idk how to convert fonts
+                        cb.BeginText();
+                        // couldn't find the font for some reason
+                        cb.SetFontAndSize(FontFactory.GetFont(ft.Name, tfc.Size).BaseFont,tfc.Size);
+                        cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, tfc.Text, tfc.X, tfc.Y,0);
+                        cb.EndText();
+                    }
+                }
+                saveFile.Close();
+            }
+            catch
+            {
+                throw new Exception("Writing to the file error");
+            }
+        }
+        public void DeleteComponents()
         {
             
             foreach (var comp in Components)
@@ -229,7 +290,7 @@ namespace sum_practise_2023
             // fix an error of loading - throws an exception for some reason idk why yet
             // TODO: check if file exists and handle exceptions
             string jsonString;
-            List<Config> configs;
+            DocumentConfig cfg;
 
             try
             {
@@ -240,13 +301,14 @@ namespace sum_practise_2023
             }
             try
             {
-                configs = JsonSL.Deserialize<List<Config>>(jsonString);
+                cfg = JsonSL.Deserialize<DocumentConfig>(jsonString);
             } catch
             {
                 throw new Exception("File deserialize error");
             }
             DeleteComponents();
-            foreach (var config in configs)
+            Size = new PointF(cfg.width, cfg.height);
+            foreach (var config in cfg.elems)
             {
                 if (config is TextFieldConfig)
                 {
@@ -267,13 +329,14 @@ namespace sum_practise_2023
         // clip size of drawing area - the size of document
         // TODO: research if there is any other way of setting clip to a panel
         // because currently its an integer, but many sizes of documents might lend non integer values.
-        public System.Drawing.Size Size{
-            get{
-                return _render.Size;
-            }
-            private set
-            {
-                _render.Size = value;
+        private PointF _size= new PointF();
+        public PointF Size{
+            get { return _size; }
+            set { 
+                _size = value;
+                var dpi = getDPI();
+                _render.MaximumSize = new Size((int)(_size.X * dpi.X), (int)(_size.Y * dpi.Y));
+                _render.Size = _render.MaximumSize;
             }
         }
         

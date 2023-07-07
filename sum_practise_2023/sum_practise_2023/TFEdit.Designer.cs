@@ -116,6 +116,7 @@
             // 
             // HSButton
             // 
+            this.HSButton.InterceptArrowKeys = false;
             this.HSButton.Location = new System.Drawing.Point(73, 38);
             this.HSButton.Maximum = new decimal(new int[] {
             200000,
@@ -139,6 +140,7 @@
             // 
             // WSButton
             // 
+            this.WSButton.InterceptArrowKeys = false;
             this.WSButton.Location = new System.Drawing.Point(73, 64);
             this.WSButton.Maximum = new decimal(new int[] {
             200000,

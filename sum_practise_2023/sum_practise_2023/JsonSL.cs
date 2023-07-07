@@ -13,7 +13,7 @@ namespace sum_practise_2023
     
     public static class JsonSL
     {
-
+        // 
         private static JsonSerializerOptions options = new JsonSerializerOptions { 
             WriteIndented = true,
             Converters = { new TypeDiscriminatorConverter<Config>() },
@@ -25,6 +25,7 @@ namespace sum_practise_2023
             return JsonSerializer.Serialize(wrapper, options);
         }
 
+        // redundancy
         private struct SerializeWrapper<T>
         {
             public T Object { get; set; }
@@ -32,9 +33,10 @@ namespace sum_practise_2023
 
         public static T Deserialize<T>(string json)
         {
-            // doesnt works right now, but will be fixed later probaly)
             return JsonSerializer.Deserialize<SerializeWrapper<T>>(json, options).Object;
         }
+
+        // кастомный конвертер, позволяет конвертировать дочерние типы корректно
         public class TypeDiscriminatorConverter<T> : JsonConverter<T> where T : ITypeDiscriminator
         {
             private readonly IEnumerable<Type> _types;

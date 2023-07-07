@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,10 +24,15 @@ namespace sum_practise_2023
         }
         private void LoadFonts()
         {
-            InstalledFontCollection installedFonts = new InstalledFontCollection();
-            foreach (FontFamily fontFamily in installedFonts.Families)
+            foreach (string filePath in Directory.GetFiles("C:/Windows/Fonts", "*", SearchOption.AllDirectories))
             {
-                FontBox.Items.Add(fontFamily.Name);
+                if (filePath != null && (filePath.EndsWith(".ttf") || filePath.EndsWith(".TTF")))
+                {
+                    PrivateFontCollection fontCollection = new PrivateFontCollection();
+                    fontCollection.AddFontFile(filePath);
+                    string fontName = fontCollection.Families[0].Name;
+                    FontBox.Items.Add(fontName);
+                }
             }
         }
         public void StartParams(ref Label l)

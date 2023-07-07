@@ -7,6 +7,7 @@ using iTextSharp;
 using static sum_practise_2023.TextFieldConfig;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
+using System.Drawing.Text;
 /*
 using System.Threading.Tasks;
 using System.Linq;
@@ -27,18 +28,21 @@ namespace sum_practise_2023
     }
     internal class Document
     {
-        // Control wrapper
-        // wraps any control for storing such as text boxes or images, so that they can easily all be edited and evoke different events in editor
+        // обертка над контролом, позволяет управлять его ивентами и переопределять логику
+        // а так же управлять ресурсами.
         public class Component : IDisposable
         {
             public delegate void ControlAction(Control comp);
+            // ивент вызываемый когда элемент требует редактирования
             public ControlAction EnableEditing; 
             public Control comp;
             protected Document _parent;
+
+            // необходимо для реализации днд
             protected bool dragged;
             private int IMLX,IMLY,ICLX,ICLY;
 
-            // takes a control(eg textbox or button or anything else)
+            
             public Component(Control c,Document parent)
             {
                 _parent = parent;
@@ -57,6 +61,8 @@ namespace sum_practise_2023
                 comp.MouseDown += this.MouseDownEventHandle;
                 comp.MouseUp += this.MouseUpEventHandle;
                 comp.MouseMove += this.MouseMoveEventHandle;
+                // это должно быть вынесено в создание новго текстбокса, если мы хотим добавлять что то помимо текста
+                EnableEditing += TextFieldEditing;
             }
 
 
@@ -83,7 +89,7 @@ namespace sum_practise_2023
                     if (e.Button == MouseButtons.Right)
                     {
 
-                        // enable drag and drop 
+                        // днд вкл
                         if (!dragged)
                         {
                             dragged = true;
@@ -100,13 +106,13 @@ namespace sum_practise_2023
             {
                 if(e.Button == MouseButtons.Right)
                 {
-                    // disable drag and drop
+                    // днд выкл
                     dragged = false;
                 }
             }
             private void MouseMoveEventHandle(object obj, MouseEventArgs e)
             {
-                // drag and drop
+                // днд
                 if (dragged)
                 {
                     var newLoc = new Point(
@@ -175,20 +181,18 @@ namespace sum_practise_2023
             lb.BackColor = Color.Transparent;
             lb.Location = position;
             lb.AutoSize = true;
+            lb.Margin = new Padding(0);
             Component cp = new Component(lb, this);
-            cp.EnableEditing += TextFieldEditing;
             return cp;
         }
 
-        private void TextFieldEditing(Control ctl)
+        private static void TextFieldEditing(Control ctl)
         {
             // TODO: enable typing for Label
             // that can be achieved by spawning a textbox somewhere, that will update text of label, and despawn it when it loses focus or escaped pressed.
             Form1.StartEditing(ctl as Label);
         }
 
-
-        // Save and load state from json
 
         public PointF getDPI()
         {
@@ -200,10 +204,12 @@ namespace sum_practise_2023
             return dpi;
         }
 
+        // возвращает сериализуемый обхект - конфиг обертку
         public DocumentConfig getConfig()
         {
             DocumentConfig ret = new DocumentConfig();
             ret.elems = new List<Config>();
+            var dpi = getDPI();
             // create a helper container that will be serialized
             foreach (var ctl in Components)
             {
@@ -213,7 +219,7 @@ namespace sum_practise_2023
                     if (ctl.comp is Label)
                     {
                         c = new TextFieldConfig();
-                        c.Deconstruct(ctl.comp);
+                        c.Deconstruct(ctl.comp,dpi);
                     }// to ensure that we can easily add configs of other types, 
                     else
                     {
@@ -230,6 +236,7 @@ namespace sum_practise_2023
             return ret;
         }
 
+        // сохраняет проект в json по указаному пути
         public void SaveComponentsToJson(string SavePath)
         {
             var cfg = getConfig();
@@ -242,39 +249,60 @@ namespace sum_practise_2023
             }
             
         }
-        public void SaveComponentsToPDF(string SavePath)
+
+        // функция хэлпер для поиска шрифтов
+        public static string GetFileName(string directoryPath, string name)
         {
-            var cfg = getConfig();
-            try
+           
+            foreach (string filePath in Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories))
             {
-                FileStream fs = new FileStream(SavePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
-                iTextSharp.text.Document saveFile = new iTextSharp.text.Document(new iTextSharp.text.Rectangle(cfg.width,cfg.height),0,0,0,0);
-                saveFile.Open();
-                var writer = PdfWriter.GetInstance(saveFile, fs);
-                writer.Open();
-                var cb = writer.DirectContentUnder;
-                foreach (var comp in cfg.elems)
+                if ( filePath.Split('.')[1] == "ttf" || filePath.Split('.')[1] == "TTF")
                 {
-                    if(comp is TextFieldConfig)
+                    using (var fontCollection = new System.Drawing.Text.PrivateFontCollection())
                     {
-                        var tfc = (TextFieldConfig)comp;
-                        var ft = new System.Drawing.Font(new FontFamily(tfc.FamilyName),tfc.Size);
-                        
-                        // idk how to convert fonts
-                        cb.BeginText();
-                        // couldn't find the font for some reason
-                        cb.SetFontAndSize(FontFactory.GetFont(ft.Name, tfc.Size).BaseFont,tfc.Size);
-                        cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, tfc.Text, tfc.X, tfc.Y,0);
-                        cb.EndText();
+                        fontCollection.AddFontFile(filePath);
+                        if (fontCollection.Families[0].Name == name)
+                        {
+                            return filePath;
+                        }
                     }
                 }
-                saveFile.Close();
             }
-            catch
-            {
-                throw new Exception("Writing to the file error");
-            }
+            return null;
+            
         }
+
+        // сохраняет проект в pdf по указанному пути
+        public void SaveComponentsToPDF(string SavePath)
+        {
+            
+            var cfg = getConfig();
+            FileStream fs = new FileStream(SavePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
+            iTextSharp.text.Document saveFile = new iTextSharp.text.Document(new iTextSharp.text.Rectangle(cfg.width*72, cfg.height*72), 0, 0, 0, 0);
+
+            var writer = PdfWriter.GetInstance(saveFile, fs);
+            saveFile.Open();
+            writer.Open();
+            var cb = writer.DirectContentUnder;
+            foreach (var comp in cfg.elems)
+            {
+                if (comp is TextFieldConfig)
+                {
+                    var tfc = (TextFieldConfig)comp;
+                    var ft = new System.Drawing.Font(new FontFamily(tfc.FamilyName), tfc.Size);
+                    tfc.FontFilePath = GetFileName("C:/Windows/Fonts", ft.FontFamily.Name);
+                    BaseFont baseFont = BaseFont.CreateFont(tfc.FontFilePath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                    cb.BeginText();
+                    cb.SetFontAndSize(baseFont, tfc.Size);
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, tfc.Text, tfc.X*72, cfg.height * 72 - tfc.Size - tfc.Y*72, 0);
+                    cb.EndText();
+                }
+            }
+            
+            saveFile.Close();
+                
+        }
+
         public void DeleteComponents()
         {
             
@@ -284,6 +312,8 @@ namespace sum_practise_2023
             }
             Components.Clear();
         }
+
+        // десериализация из json
         public void LoadComponentsFromJson(string LoadPath)
         {
             // TODO: same here, rethrow an exception with more vivid discription that the file is'nt in the right format
@@ -308,13 +338,14 @@ namespace sum_practise_2023
             }
             DeleteComponents();
             Size = new PointF(cfg.width, cfg.height);
+            var dpi = getDPI();
             foreach (var config in cfg.elems)
             {
                 if (config is TextFieldConfig)
                 {
                     try
                     {
-                        Components.Add(new Component(config.Construct(), this));
+                        Components.Add(new Component(config.Construct(dpi), this));
                     } catch
                     {
                         throw new Exception("New component add error");
@@ -330,6 +361,8 @@ namespace sum_practise_2023
         // TODO: research if there is any other way of setting clip to a panel
         // because currently its an integer, but many sizes of documents might lend non integer values.
         private PointF _size= new PointF();
+
+        // автоматическое изменение размеров 
         public PointF Size{
             get { return _size; }
             set { 

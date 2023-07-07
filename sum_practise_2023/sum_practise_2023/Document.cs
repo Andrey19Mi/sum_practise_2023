@@ -7,6 +7,7 @@ using iTextSharp;
 using static sum_practise_2023.TextFieldConfig;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
+using System.Drawing.Text;
 /*
 using System.Threading.Tasks;
 using System.Linq;
@@ -242,8 +243,29 @@ namespace sum_practise_2023
             }
             
         }
+        static string GetFileName(string directoryPath, string name)
+        {
+            foreach (string filePath in Directory.GetFileSystemEntries(directoryPath, "*", SearchOption.AllDirectories))
+            {
+                if (filePath.Split('.')[1] == "ttf")
+                {
+                    using (var fontCollection = new System.Drawing.Text.PrivateFontCollection())
+                    {
+                        fontCollection.AddFontFile(filePath);
+                        if (fontCollection.Families[0].Name == name)
+                        {
+                            return filePath;
+                        }
+                    }
+                }
+            }
+            return null;
+            
+        }
+
         public void SaveComponentsToPDF(string SavePath)
         {
+            
             var cfg = getConfig();
             FileStream fs = new FileStream(SavePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
             iTextSharp.text.Document saveFile = new iTextSharp.text.Document(new iTextSharp.text.Rectangle(cfg.width*72, cfg.height*72), 0, 0, 0, 0);
@@ -257,19 +279,20 @@ namespace sum_practise_2023
                 if (comp is TextFieldConfig)
                 {
                     var tfc = (TextFieldConfig)comp;
-                    tfc.FontFilePath = "../../Fonts/Arial.ttf";
                     var ft = new System.Drawing.Font(new FontFamily(tfc.FamilyName), tfc.Size);
-
-                    // idk how to convert fonts
+                    Console.WriteLine(ft.FontFamily.Name);
+                    tfc.FontFilePath = GetFileName("C:/Windows/Fonts", ft.FontFamily.Name);
+                    Console.WriteLine(tfc.FontFilePath);
+                    
                     cb.BeginText();
-                    // couldn't find the font for some reason
                     cb.SetFontAndSize(BaseFont.CreateFont(tfc.FontFilePath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED), tfc.Size);
                     cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, tfc.Text, tfc.X, tfc.Y, 0);
                     cb.EndText();
                 }
             }
-            saveFile.Close();
             
+            saveFile.Close();
+                
         }
 
         public void DeleteComponents()

@@ -28,18 +28,21 @@ namespace sum_practise_2023
     }
     internal class Document
     {
-        // Control wrapper
-        // wraps any control for storing such as text boxes or images, so that they can easily all be edited and evoke different events in editor
+        // обертка над контролом, позволяет управлять его ивентами и переопределять логику
+        // а так же управлять ресурсами.
         public class Component : IDisposable
         {
             public delegate void ControlAction(Control comp);
+            // ивент вызываемый когда элемент требует редактирования
             public ControlAction EnableEditing; 
             public Control comp;
             protected Document _parent;
+
+            // необходимо для реализации днд
             protected bool dragged;
             private int IMLX,IMLY,ICLX,ICLY;
 
-            // takes a control(eg textbox or button or anything else)
+            
             public Component(Control c,Document parent)
             {
                 _parent = parent;
@@ -58,6 +61,7 @@ namespace sum_practise_2023
                 comp.MouseDown += this.MouseDownEventHandle;
                 comp.MouseUp += this.MouseUpEventHandle;
                 comp.MouseMove += this.MouseMoveEventHandle;
+                // это должно быть вынесено в создание новго текстбокса, если мы хотим добавлять что то помимо текста
                 EnableEditing += TextFieldEditing;
             }
 
@@ -85,7 +89,7 @@ namespace sum_practise_2023
                     if (e.Button == MouseButtons.Right)
                     {
 
-                        // enable drag and drop 
+                        // днд вкл
                         if (!dragged)
                         {
                             dragged = true;
@@ -102,13 +106,13 @@ namespace sum_practise_2023
             {
                 if(e.Button == MouseButtons.Right)
                 {
-                    // disable drag and drop
+                    // днд выкл
                     dragged = false;
                 }
             }
             private void MouseMoveEventHandle(object obj, MouseEventArgs e)
             {
-                // drag and drop
+                // днд
                 if (dragged)
                 {
                     var newLoc = new Point(
@@ -190,8 +194,6 @@ namespace sum_practise_2023
         }
 
 
-        // Save and load state from json
-
         public PointF getDPI()
         {
             Graphics g = _render.CreateGraphics();
@@ -202,6 +204,7 @@ namespace sum_practise_2023
             return dpi;
         }
 
+        // возвращает сериализуемый обхект - конфиг обертку
         public DocumentConfig getConfig()
         {
             DocumentConfig ret = new DocumentConfig();
@@ -233,6 +236,7 @@ namespace sum_practise_2023
             return ret;
         }
 
+        // сохраняет проект в json по указаному пути
         public void SaveComponentsToJson(string SavePath)
         {
             var cfg = getConfig();
@@ -245,6 +249,8 @@ namespace sum_practise_2023
             }
             
         }
+
+        // функция хэлпер для поиска шрифтов
         public static string GetFileName(string directoryPath, string name)
         {
            
@@ -266,6 +272,7 @@ namespace sum_practise_2023
             
         }
 
+        // сохраняет проект в pdf по указанному пути
         public void SaveComponentsToPDF(string SavePath)
         {
             
@@ -305,6 +312,8 @@ namespace sum_practise_2023
             }
             Components.Clear();
         }
+
+        // десериализация из json
         public void LoadComponentsFromJson(string LoadPath)
         {
             // TODO: same here, rethrow an exception with more vivid discription that the file is'nt in the right format
@@ -352,6 +361,8 @@ namespace sum_practise_2023
         // TODO: research if there is any other way of setting clip to a panel
         // because currently its an integer, but many sizes of documents might lend non integer values.
         private PointF _size= new PointF();
+
+        // автоматическое изменение размеров 
         public PointF Size{
             get { return _size; }
             set { 

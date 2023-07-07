@@ -28,9 +28,9 @@ namespace sum_practise_2023
     internal interface Config : JsonSL.ITypeDiscriminator
     {
         //Deconstruct takes a non serializable control, checks its type and stores all of the data to be serialized in fields of its class
-        void Deconstruct(System.Windows.Forms.Control ctl);
+        void Deconstruct(System.Windows.Forms.Control ctl,PointF dpi);
         // Constructs returns a control of a known type with all serializable data set to a control
-        System.Windows.Forms.Control Construct();
+        System.Windows.Forms.Control Construct(PointF dpi);
     }
     internal class TextFieldConfig : Config
     {
@@ -39,18 +39,18 @@ namespace sum_practise_2023
         public float Size { get; set; }
         public FontStyle Style { get; set; }
         public string Text { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
         public string FontFilePath { get; internal set; }
 
-        public void Deconstruct(System.Windows.Forms.Control ctl)
+        public void Deconstruct(System.Windows.Forms.Control ctl, PointF dpi)
         {
             if (ctl is System.Windows.Forms.Label && ctl != null) {
                 this.Text = ctl.Text;
-                this.X = ctl.Location.X;
-                this.Y = ctl.Location.Y;
+                this.X = ((float)ctl.Location.X)/dpi.X;
+                this.Y = ((float)ctl.Location.Y)/dpi.Y;
                 this.FamilyName = ctl.Font.FontFamily.Name;
-                this.Size  = ctl.Font.Size;
+                this.Size  = ctl.Font.SizeInPoints;
                 this.Style = ctl.Font.Style;
             }
             else
@@ -58,16 +58,18 @@ namespace sum_practise_2023
                 throw new ConfigException();
             }
         }
-        public Control Construct()
+        public Control Construct(PointF dpi)
         {
             if ( this.Text == null || this.FamilyName == null ) {
                 throw new ConfigException();
             }
             Control lb = new Label();
             lb.Text = Text;
-            lb.Location = new Point(X,Y);
+            lb.Location = new Point((int)(X*dpi.X),(int)(Y*dpi.Y));
+            lb.AutoSize = true;
+            lb.Margin = new Padding(0);
             // this one might throw an
-            lb.Font = new Font(FamilyName, Size, Style);
+            lb.Font = new Font(FamilyName, Size, Style,GraphicsUnit.Point);
             return lb;
         }
     }

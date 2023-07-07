@@ -177,6 +177,7 @@ namespace sum_practise_2023
             lb.BackColor = Color.Transparent;
             lb.Location = position;
             lb.AutoSize = true;
+            lb.Margin = new Padding(0);
             Component cp = new Component(lb, this);
             return cp;
         }
@@ -205,6 +206,7 @@ namespace sum_practise_2023
         {
             DocumentConfig ret = new DocumentConfig();
             ret.elems = new List<Config>();
+            var dpi = getDPI();
             // create a helper container that will be serialized
             foreach (var ctl in Components)
             {
@@ -214,7 +216,7 @@ namespace sum_practise_2023
                     if (ctl.comp is Label)
                     {
                         c = new TextFieldConfig();
-                        c.Deconstruct(ctl.comp);
+                        c.Deconstruct(ctl.comp,dpi);
                     }// to ensure that we can easily add configs of other types, 
                     else
                     {
@@ -285,7 +287,7 @@ namespace sum_practise_2023
                     BaseFont baseFont = BaseFont.CreateFont(tfc.FontFilePath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
                     cb.BeginText();
                     cb.SetFontAndSize(baseFont, tfc.Size);
-                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, tfc.Text, tfc.X*0.72f, cfg.height * 72 - tfc.Size - tfc.Y * 0.72f, 0);
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, tfc.Text, tfc.X*72, cfg.height * 72 - tfc.Size - tfc.Y*72, 0);
                     cb.EndText();
                 }
             }
@@ -327,13 +329,14 @@ namespace sum_practise_2023
             }
             DeleteComponents();
             Size = new PointF(cfg.width, cfg.height);
+            var dpi = getDPI();
             foreach (var config in cfg.elems)
             {
                 if (config is TextFieldConfig)
                 {
                     try
                     {
-                        Components.Add(new Component(config.Construct(), this));
+                        Components.Add(new Component(config.Construct(dpi), this));
                     } catch
                     {
                         throw new Exception("New component add error");

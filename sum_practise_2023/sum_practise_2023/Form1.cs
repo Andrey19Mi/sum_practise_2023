@@ -136,8 +136,7 @@ namespace sum_practise_2023
                 CreateNewButton_Click(sender, e);
             }else if (e.Control && e.KeyCode == Keys.P)
             {
-                // print  TODO : need to make a button
-                dm.SaveComponentsToPDF("document.pdf");
+                PDFC_Click(sender, e);
             }
         }
 
@@ -151,6 +150,11 @@ namespace sum_practise_2023
         {
             this.Size = new Size(main.Width,main.Height + panel1.Height + 40);
             
+        }
+
+        private void PDFC_Click(object sender, EventArgs e)
+        {
+            dm.SaveComponentsToPDF("document.pdf");
         }
     }
 }

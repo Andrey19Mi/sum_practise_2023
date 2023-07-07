@@ -57,6 +57,7 @@ namespace sum_practise_2023
                 comp.MouseDown += this.MouseDownEventHandle;
                 comp.MouseUp += this.MouseUpEventHandle;
                 comp.MouseMove += this.MouseMoveEventHandle;
+                EnableEditing += TextFieldEditing;
             }
 
 
@@ -176,11 +177,10 @@ namespace sum_practise_2023
             lb.Location = position;
             lb.AutoSize = true;
             Component cp = new Component(lb, this);
-            cp.EnableEditing += TextFieldEditing;
             return cp;
         }
 
-        private void TextFieldEditing(Control ctl)
+        private static void TextFieldEditing(Control ctl)
         {
             // TODO: enable typing for Label
             // that can be achieved by spawning a textbox somewhere, that will update text of label, and despawn it when it loses focus or escaped pressed.
@@ -248,23 +248,23 @@ namespace sum_practise_2023
             try
             {
                 FileStream fs = new FileStream(SavePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
-                iTextSharp.text.Document saveFile = new iTextSharp.text.Document(new iTextSharp.text.Rectangle(cfg.width,cfg.height),0,0,0,0);
+                iTextSharp.text.Document saveFile = new iTextSharp.text.Document(new iTextSharp.text.Rectangle(cfg.width, cfg.height), 0, 0, 0, 0);
                 saveFile.Open();
                 var writer = PdfWriter.GetInstance(saveFile, fs);
                 writer.Open();
                 var cb = writer.DirectContentUnder;
                 foreach (var comp in cfg.elems)
                 {
-                    if(comp is TextFieldConfig)
+                    if (comp is TextFieldConfig)
                     {
                         var tfc = (TextFieldConfig)comp;
-                        var ft = new System.Drawing.Font(new FontFamily(tfc.FamilyName),tfc.Size);
-                        
+                        var ft = new System.Drawing.Font(new FontFamily(tfc.FamilyName), tfc.Size);
+
                         // idk how to convert fonts
                         cb.BeginText();
                         // couldn't find the font for some reason
-                        cb.SetFontAndSize(FontFactory.GetFont(ft.Name, tfc.Size).BaseFont,tfc.Size);
-                        cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, tfc.Text, tfc.X, tfc.Y,0);
+                        cb.SetFontAndSize(FontFactory.GetFont(ft.Name, tfc.Size).BaseFont, tfc.Size);
+                        cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, tfc.Text, tfc.X, tfc.Y, 0);
                         cb.EndText();
                     }
                 }
@@ -275,6 +275,7 @@ namespace sum_practise_2023
                 throw new Exception("Writing to the file error");
             }
         }
+
         public void DeleteComponents()
         {
             

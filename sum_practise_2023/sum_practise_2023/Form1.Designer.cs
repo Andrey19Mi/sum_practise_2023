@@ -36,6 +36,7 @@
             this.SaveButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.CreateNewButton = new System.Windows.Forms.Button();
+            this.PDFC = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -115,6 +116,7 @@
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel1.Controls.Add(this.PDFC);
             this.panel1.Controls.Add(this.CreateNewButton);
             this.panel1.Controls.Add(this.AddTextButton);
             this.panel1.Controls.Add(this.SaveButton);
@@ -140,6 +142,18 @@
             this.CreateNewButton.Text = "F";
             this.CreateNewButton.UseVisualStyleBackColor = true;
             this.CreateNewButton.Click += new System.EventHandler(this.CreateNewButton_Click);
+            // 
+            // PDFC
+            // 
+            this.PDFC.Dock = System.Windows.Forms.DockStyle.Right;
+            this.PDFC.Location = new System.Drawing.Point(529, 0);
+            this.PDFC.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PDFC.Name = "PDFC";
+            this.PDFC.Size = new System.Drawing.Size(29, 31);
+            this.PDFC.TabIndex = 7;
+            this.PDFC.Text = "P";
+            this.PDFC.UseVisualStyleBackColor = true;
+            this.PDFC.Click += new System.EventHandler(this.PDFC_Click);
             // 
             // Form1
             // 
@@ -169,6 +183,7 @@
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button CreateNewButton;
+        private System.Windows.Forms.Button PDFC;
     }
 }
 

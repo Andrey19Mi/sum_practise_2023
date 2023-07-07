@@ -243,11 +243,12 @@ namespace sum_practise_2023
             }
             
         }
-        static string GetFileName(string directoryPath, string name)
+        public static string GetFileName(string directoryPath, string name)
         {
-            foreach (string filePath in Directory.GetFileSystemEntries(directoryPath, "*", SearchOption.AllDirectories))
+           
+            foreach (string filePath in Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories))
             {
-                if (filePath.Split('.')[1] == "ttf")
+                if ( filePath.Split('.')[1] == "ttf" || filePath.Split('.')[1] == "TTF")
                 {
                     using (var fontCollection = new System.Drawing.Text.PrivateFontCollection())
                     {

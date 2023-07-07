@@ -154,7 +154,15 @@ namespace sum_practise_2023
 
         private void PDFC_Click(object sender, EventArgs e)
         {
-            dm.SaveComponentsToPDF("document.pdf");
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "PDF File|*.pdf";
+            saveFileDialog1.Title = "Save PDF File";
+            saveFileDialog1.ShowDialog();
+
+            if (saveFileDialog1.FileName != "")
+            {
+                dm.SaveComponentsToPDF(saveFileDialog1.FileName);
+            }
         }
     }
 }

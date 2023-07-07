@@ -281,13 +281,11 @@ namespace sum_practise_2023
                 {
                     var tfc = (TextFieldConfig)comp;
                     var ft = new System.Drawing.Font(new FontFamily(tfc.FamilyName), tfc.Size);
-                    Console.WriteLine(ft.FontFamily.Name);
                     tfc.FontFilePath = GetFileName("C:/Windows/Fonts", ft.FontFamily.Name);
-                    Console.WriteLine(tfc.FontFilePath);
-                    
+                    BaseFont baseFont = BaseFont.CreateFont(tfc.FontFilePath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
                     cb.BeginText();
-                    cb.SetFontAndSize(BaseFont.CreateFont(tfc.FontFilePath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED), tfc.Size);
-                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, tfc.Text, tfc.X, tfc.Y, 0);
+                    cb.SetFontAndSize(baseFont, tfc.Size);
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, tfc.Text, tfc.X*0.72f, cfg.height * 72 - tfc.Size - tfc.Y * 0.72f, 0);
                     cb.EndText();
                 }
             }

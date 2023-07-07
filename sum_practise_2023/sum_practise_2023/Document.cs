@@ -245,35 +245,31 @@ namespace sum_practise_2023
         public void SaveComponentsToPDF(string SavePath)
         {
             var cfg = getConfig();
-            try
-            {
-                FileStream fs = new FileStream(SavePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
-                iTextSharp.text.Document saveFile = new iTextSharp.text.Document(new iTextSharp.text.Rectangle(cfg.width, cfg.height), 0, 0, 0, 0);
-                saveFile.Open();
-                var writer = PdfWriter.GetInstance(saveFile, fs);
-                writer.Open();
-                var cb = writer.DirectContentUnder;
-                foreach (var comp in cfg.elems)
-                {
-                    if (comp is TextFieldConfig)
-                    {
-                        var tfc = (TextFieldConfig)comp;
-                        var ft = new System.Drawing.Font(new FontFamily(tfc.FamilyName), tfc.Size);
+            FileStream fs = new FileStream(SavePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
+            iTextSharp.text.Document saveFile = new iTextSharp.text.Document(new iTextSharp.text.Rectangle(cfg.width*72, cfg.height*72), 0, 0, 0, 0);
 
-                        // idk how to convert fonts
-                        cb.BeginText();
-                        // couldn't find the font for some reason
-                        cb.SetFontAndSize(FontFactory.GetFont(ft.Name, tfc.Size).BaseFont, tfc.Size);
-                        cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, tfc.Text, tfc.X, tfc.Y, 0);
-                        cb.EndText();
-                    }
-                }
-                saveFile.Close();
-            }
-            catch
+            var writer = PdfWriter.GetInstance(saveFile, fs);
+            saveFile.Open();
+            writer.Open();
+            var cb = writer.DirectContentUnder;
+            foreach (var comp in cfg.elems)
             {
-                throw new Exception("Writing to the file error");
+                if (comp is TextFieldConfig)
+                {
+                    var tfc = (TextFieldConfig)comp;
+                    tfc.FontFilePath = "../../Fonts/Arial.ttf";
+                    var ft = new System.Drawing.Font(new FontFamily(tfc.FamilyName), tfc.Size);
+
+                    // idk how to convert fonts
+                    cb.BeginText();
+                    // couldn't find the font for some reason
+                    cb.SetFontAndSize(BaseFont.CreateFont(tfc.FontFilePath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED), tfc.Size);
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, tfc.Text, tfc.X, tfc.Y, 0);
+                    cb.EndText();
+                }
             }
+            saveFile.Close();
+            
         }
 
         public void DeleteComponents()

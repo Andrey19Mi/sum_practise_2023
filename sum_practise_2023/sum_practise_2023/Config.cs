@@ -41,6 +41,7 @@ namespace sum_practise_2023
         public string Text { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
+        public string FontFilePath { get; internal set; }
 
         public void Deconstruct(System.Windows.Forms.Control ctl)
         {
